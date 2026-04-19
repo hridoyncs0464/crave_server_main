@@ -764,20 +764,6 @@ app.get("/api/my-reservations", async (req, res) => {
   }
 });
 
-app.get("/api/setup-admin", async (_req, res) => {
-  try {
-    const hash = await bcrypt.hash("admin123", 10);
-    await pool.query("DELETE FROM staff WHERE email = 'admin@crave.com'");
-    await pool.query(
-      "INSERT INTO staff (name, email, password_hash, role, is_active) VALUES (?, ?, ?, 'admin', 1)",
-      ["Admin", "admin@crave.com", hash],
-    );
-    res.json({ success: true, message: "Admin created successfully!" });
-  } catch (error) {
-    res.json({ success: false, error: error.message });
-  }
-});
-
 process.on("uncaughtException", (err) =>
   console.error("Uncaught exception:", err.message),
 );
